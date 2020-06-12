@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title></title>
+    <style>
+        *{margin: 0;padding: 0;}
+
+        body,
+        html {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-width: 320px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+   {%if banquan !='无版权' %}
+        .yushan_logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 15%;
+            z-index: 9999;
+        }
+  {% endif %}
+        .box {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .box1 {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .car_img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+         {%if banquan !='无版权' %}
+        .{{banquan}}_banquan {
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #c5bbc5;
+            transform: scale(0.8);
+            background-size: 100% 100%;
+            padding: 8px 0;
+            box-sizing: border-box;
+        }
+        .{{banquan}}_banquan a{
+            color: #c5bbc5;
+        }
+        {% endif %}
+        {{buttonCss}}
+            {%if pop_bj !='' %}
+              /*弹窗*/
+        .down_pop_tb {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 99;
+            display: none;
+        }
+
+        .down_pop {
+            position: absolute;
+            top: 25%;
+            width: 71%;
+            left: 0;
+            right: 0;
+            margin: auto;
+            z-index: 999;
+        }
+
+        .down_pop .down_pop_background {
+            width: 100%;
+        }
+
+        .down_pop .down_pop_btn {
+            width: 65%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 10%;
+            margin: auto;
+            z-index: 99;
+        }
+
+        .down_pop .close {
+            width: 16%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -20%;
+            margin: auto;
+        }
+         {% endif %}
+    </style>
+</head>
+
+<body>
+<div class="box">
+    <div class="box1">
+         {%if banquan !='无版权' %}
+         <div class="{{banquan}}_logo_white"></div>
+        {% endif %}
+        <div style="position:relative">
+             {% for item in img1 %}
+                <img class="car_img" src="{{item}}" onclick="return false"  alt="" />
+            {% endfor%}
+                  {% for item in button_info %}
+              {%if item['name'] =='zhezhao_down' %}
+                    <div class="down_a" style="position: absolute;width:{{item['width']}};height:{{item['height']}};left:{{item['left']}};top:{{item['top']}};z-index:99"></div>
+             {% endif %}
+                   {%if item['name'] =='zhezhao_pop' %}
+                    <div class="pop-up-window" style="position: absolute;width:{{item['width']}};height:{{item['height']}};left:{{item['left']}};top:{{item['top']}};z-index:99"></div>
+             {% endif %}
+        {% endfor %}
+                {% for item1 in button_info %}
+            {%if item1['name'] =='video' %}
+                <div class="video_box" style="  width: {{item1['width']}};
+            position: absolute;
+            left:{{item1['left']}};
+            top: {{item1['top']}};
+            z-index: 99;">
+                    <img class="play" style="  position: absolute;width: 25%; left: 0;right: 0;top: 0;bottom: 0;margin: auto;z-index: 2001;" src="{{video_icon}}" alt="" />
+                    <video width="100%" id="video" style="width:100%" poster="{{video_img}}" id="0">
+                    <source
+                    src="{{video}}"
+                    type="video/mp4" />
+                    </video>
+                </div>
+             {% endif %}
+      {%if item1['name'] =='no_xuanfu' %}
+<img src="{{item1['img']}}" style="  width: {{item1['width']}};
+            position: absolute;
+            left:{{item1['left']}};
+            top: {{item1['top']}};
+            z-index: 99;" class="down_a scaleBtn" />
+ {% endif %}
+ {% endfor%}
+        </div>
+
+
+
+        {%if banquan !='无版权' %}
+            <div class="{{banquan}}_banquan"></div>
+        {% endif %}
+
+    </div>
+</div>
+  {% for item2 in button_info %}
+      {%if item2['name'] =='xuanfu' %}
+<img src="{{item2['img']}}" style=" width: {{item2['width']}};
+            position: absolute;
+            left:{{item2['left']}};
+            bottom: {{item2['bottom']}};
+            z-index: 99;" class="down_a scaleBtn" />
+ {% endif %}
+ {% endfor%}
+      {%if pop_bj !='' %}
+<!--弹窗-->
+<div class="down_pop_tb">
+    <div class="down_pop">
+        <img class="down_pop_background" src="{{pop_bj}}" onclick="return false"
+             alt="">
+        <img src="{{pop_down}}" class="down_pop_btn down_a" alt="">
+        <img src="http://img.zntec.mobi/0.5914691315366616.png" onclick="return false" class="close" alt="">
+    </div>
+</div>
+ {% endif %}
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<!--监控-->
+<script src="//img.zntec.mobi/javascripts/yushan_zs_min.js"></script>
+<!--默认下载包地址-->
+<script src="./down.js"></script>
+<!--请求下载包-->
+<script src="../lp_js/dl.min.js"></script>
+<!--版权地址-->
+  {%if banquan !='无版权' %}
+<script src="../lp_js/{{banquan}}.js"></script>
+{% endif %}
+<script>
+     {%if pop_bj !='' %}
+        $('.pop-up-window').click(function () {
+            $('.down_pop_tb').show()
+        })
+        $('.close').click(function () {
+            $('.down_pop_tb').hide()
+        })
+    {% endif %}
+    {% for item1 in button_info %}
+    {%if item1['name'] =='video' %}
+            var video = document.querySelector("#video");
+    $(".play").click(function () {
+        video.play();
+        $(".play").css("display", "none");
+    });
+    $("#video").bind("pause ended", function () {
+        $(".play").css("display", "block");
+    });
+    {% endif %}
+    {% endfor%}
+
+    new _yushan_Down.dl_down({
+        ios:down_href.ios,
+        android:down_href.android,
+        dlbutton: ['.down_a'],
+    });
+
+    new _yushan.dl_info({
+        url: '',
+        dlbutton: ['.down_a']
+    });
+</script>
+</body>
+
+</html>

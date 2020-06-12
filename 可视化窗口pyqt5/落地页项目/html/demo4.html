@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <script src="https://img.zntec.mobi/flexible.debug.js"></script>
+    <script src="https://img.zntec.mobi/vue.min.js" type="application/javascript"></script>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        body,html{
+            position: relative;
+            width:100%;
+            margin:0 auto;
+            font-family: PingFangSC-Semibold, sans-serif;
+            overflow-x: hidden;
+        }
+        .box {
+            width: 100%;
+        }
+           {%if banquan !='无版权' %}
+        .yushan_logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 15%;
+            z-index: 9999;
+        }
+        .{{banquan}}_banquan {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #c5bbc5;
+            background-size: 100% 100%;
+            padding: 8px 0;
+            box-sizing: border-box;
+        }
+        .{{banquan}}_banquan a{
+            color: #c5bbc5;
+        }
+{% endif %}
+    </style>
+
+</head>
+<body>
+<div class="box" id="app" >
+              {%if banquan !='无版权' %}
+        <div class="{{banquan}}_logo_black"></div>
+{% endif %}
+        {%if banquan !='无版权' %}
+        <div class="{{banquan}}_banquan"></div>
+{% endif %}
+</div>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<!--监控-->
+<script src="//img.zntec.mobi/javascripts/yushan_zs_min.js"></script>
+<!--默认下载包地址-->
+<script src="./down.js"></script>
+<!--请求下载包-->
+<script src="../lp_js/dl.min.js"></script>
+  {%if banquan !='无版权' %}
+<script src="../lp_js/{{banquan}}.js"></script>
+{% endif %}
+<script type="text/javascript">
+    var _this = '';
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            ajax_href:'', //请求地址
+            list_data:[],
+            default:[] //默认数据
+        },
+        updated() {
+            new _yushan_Down.dl_down({
+                ios:down_href.ios,
+                android:down_href.android,
+                dlbutton: ['.down_btn'],
+            });
+            new _yushan.dl_info({
+                url: '',
+                dlbutton: ['.down_btn']
+            });
+        },
+        created: function created() {
+            _this = this;
+            var ctx = _getQueryString('keyword') || ' ';
+            _this._getAjax(ctx);
+        },
+
+        methods: {
+            _getAjax(ctx){
+                _this = this;
+                $.ajax({
+                    url:_this.ajax_href + ctx,
+                    type: 'GET',
+                    success: function success(result) {
+                       
+                    },
+                    error: function error(err) {
+                        _this.list_data =_this.default;
+                    }
+                });
+            },
+            _getQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) {
+                    return r[2]
+                }
+                return null
+            },
+        },
+    });
+</script>
+</body>
+</html>

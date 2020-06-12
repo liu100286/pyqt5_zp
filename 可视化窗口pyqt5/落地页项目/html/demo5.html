@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        body,html{
+            position: relative;
+            width:100%;
+            height:100%;
+            margin:0 auto;
+            overflow: hidden;
+
+        }
+            {%if banquan !='无版权' %}
+        .yushan_logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 15%;
+            z-index: 9999;
+        }
+        .{{banquan}}_banquan {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #c5bbc5;
+            background-size: 100% 100%;
+            padding: 8px 0;
+            box-sizing: border-box;
+        }
+        .{{banquan}}_banquan a{
+            color: #c5bbc5;
+        }
+        {% endif %}
+    </style>
+
+</head>
+<body>
+<iframe  id="trues" style="width: 100%;height:100%;" src="{{ iframeUrl}}" frameborder="0">
+
+</iframe>
+              {%if banquan !='无版权' %}
+        <div class="{{banquan}}_logo_black"></div>
+{% endif %}
+        {%if banquan !='无版权' %}
+        <div class="{{banquan}}_banquan"></div>
+{% endif %}
+</body>
+  {%if banquan !='无版权' %}
+<script src="../lp_js/{{banquan}}.js"></script>
+{% endif %}
+<script>
+    var url = '{{iframeUrl}}';
+    var ifm = document.querySelector('#trues');
+    var ctx = window.location.search;
+    ifm.src = url+ctx;
+</script>
+
+</html>

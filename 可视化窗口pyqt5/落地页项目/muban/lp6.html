@@ -1,0 +1,536 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <script src="https://img.zntec.mobi/vue.min.js" type="application/javascript"></script>
+    <script type="text/javascript" src="./qwebchannel.js"></script>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0
+        }
+
+        .box {
+            width: 360px;
+            height:100%;
+            position: relative;
+            display: inline-block;
+            margin: 0 auto;
+        }
+     .box_bj {
+            width:100%;
+           height:100%;
+        }
+        .bj {
+               width: 100%;
+              height:100%;
+    display: block;
+        }
+        .canvasBox {
+            position:absolute;
+            top:0;
+            width:100%;
+            height:100%
+        }
+        .canvasContent {
+            width: 100%;
+            height: 100%;
+        }
+        #rRightDown, #rLeftDown, #rLeftUp, #rRightUp, #rRight, #rLeft, #rUp, #rDown {
+             width: 4px;
+            height: 4px;
+            border: solid 1px #f56464;
+            background: #fff;
+            position: absolute;
+            z-index: 10;
+            pointer-events: auto;
+            border-radius: 4px;
+        }
+
+        #rLeftDown, #rRightUp {
+            cursor: ne-resize;
+        }
+        #rRightDown, #rLeftUp {
+            cursor: nw-resize;
+        }
+        #rRight, #rLeft {
+            cursor: e-resize;
+        }
+        #rUp, #rDown {
+            cursor: n-resize;
+        }
+        #rRightDown {
+            bottom: -3px;
+            right: -3px;
+        }
+        #rLeftDown {
+            bottom: -3px;
+            left: -3px;
+        }
+        #rRightUp {
+            top: -3px;
+            right: -3px;
+        }
+        #rLeftUp {
+            top: -3px;
+            left: -3px;
+        }
+        #rRight {
+            right: -3px;
+            top: 50%
+        }
+        #rLeft {
+            left: -3px;
+            top: 50%
+        }
+        #rUp {
+            top: -3px;
+            left: 50%
+        }
+        #rDown {
+            bottom: -3px;
+            left: 50%
+        }
+        .canvasToolBar {
+            background: #999;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 12px;
+            height: 35px;
+            line-height: 36px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 10px;
+            margin: auto;
+            width: 440px;
+            z-index: 9999999;
+        }
+        .item {
+            float: left;
+        }
+        .item:first-child {
+            margin-left: 20px;
+        }
+        .propUpdateInfoTitle input{
+            -moz-border-radius: 16px;
+            -webkit-border-radius: 16px;
+            -webkit-box-shadow: 0 0 2px #999 inset;
+            -webkit-box-sizing: border-box;
+            background: #7e7e7e;
+            border: 1px solid #999;
+            border-radius: 16px;
+            box-shadow: inset 0 0 2px #999;
+            box-sizing: border-box;
+            color: #dbdbdb;
+            font-size: 12px;
+            height: 22px;
+            line-height: 22px;
+            outline: none;
+            padding: 0 5px;
+            text-indent: 5px;
+            width: 120px;
+        }
+        .scaleArea{
+            font-size: 14px;
+            width: 110px;
+            text-align: center;
+            margin-right: 20px;
+        }
+        .size {
+            margin-right: 10px;
+        }
+                 .zhidaoweilai_banquan {
+                     position:absolute;
+                     bottom:0;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color: #c5bbc5;
+            transform: scale(0.8);
+            background-size: 100% 100%;
+            padding: 8px 0;
+            box-sizing: border-box;
+        }
+        .zhidaoweilai_banquan a{
+            color: #c5bbc5;
+        }
+    </style>
+    <style>
+        * {
+            margin: 0;
+            padding: 0
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        ul, li {margin: 0; padding: 0; list-style: none;}
+
+        .box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .box ul {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            flex-wrap: nowrap;
+            z-index: -1;
+        }
+
+        .box ul li {
+            height: 100%;
+        }
+
+        .box ul li .bg-img {
+            padding: 0;
+            margin: 0;
+            display: block;
+            height: 100%;
+        }
+
+        .content {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+        }
+       .content .search {
+           width: 8rem;
+           margin: 0 auto;
+           margin-top: 3rem;
+        }
+        .content .logo {
+            margin-top: 1.2rem;
+            width: 2.5rem;
+        }
+        .content .down{
+            width: 8rem;
+            margin-top: 3rem;
+        }
+    </style>
+
+<body>
+<div class="box"  id="app">
+        <button style="position: fixed;top: 0;right: 0;z-index: 999" @click="pullAjax">上传数据</button>
+         <div class="box_bj">
+                 <img class="bj" src="{{background_slide}}" alt="">
+                        <div class="zhidaoweilai_banquan">
+         <div class="bq_name bq_title">xxxxx &nbsp; <a href="http://www.beian.miit.gov.cn" target="_blank">xxx-1</a></div><div class="site bq_title">地址：北京市昌平区回龙观西大街16号院1号楼六层A605A室</div>
+     </div>
+           </div>
+    <div class="canvasBox contentWrapper" @mouseup="mouseupDivSize($event)" @mousemove="isTrue?mousemoveDiv($event):''" >
+        <div class="canvasContent"
+             @mouseup="mouseupDivSize($event)"
+             @mousemove="mousemoveDivSize($event)">
+            <!--background-->
+            <div style="box-sizing: border-box" v-for="(item,key) in tc_data">
+                <div
+                           @dblclick="dblclickDiv($event,item)"
+                        @mousedown=mousedownDiv($event,item)
+                        @mouseup=mouseupDiv($event,item)
+
+                        :key="key" :style="{
+                    width:item.width+'px',
+                    height:item.height+'px',
+                    border:'2px dashed #8790a2',
+                    position: 'absolute',
+                    top:item.top+'px',
+                    left:item.left+'px',
+                     zIndex:99,
+                     cursor: 'move',
+                          background:'url('+item.img+') no-repeat ',
+                     backgroundSize:'100%',
+                     backgroundPositionY:'top',
+                    }">
+                    <div id="rRightDown"
+                         @mousedown="mousedownDiv_size($event,item,'bottom','right')"
+                         @mouseup.stop=mouseupDiv_size($event,item)>
+                    </div>
+                    <div id="rLeftDown"
+                         @mousedown="mousedownDiv_size($event,item,'bottom','left')"
+                         @mouseup.stop=mouseupDiv_size($event,item)></div>
+                    <div id="rRightUp"
+                         @mousedown=" mousedownDiv_size($event,item,'top','right')"
+                         @mouseup=mouseupDiv_size($event,item)></div>
+                    <div id="rLeftUp"
+                         @mousedown="mousedownDiv_size($event,item,'top','left')"
+                         @mouseup=mouseupDiv_size($event,item)></div>
+                    <div id="rRight"
+                         @mousedown="mousedownDiv_size($event,item,'','right')"
+                         @mouseup=mouseupDiv_size($event,item)></div>
+                    <div id="rLeft"
+                         @mousedown="mousedownDiv_size($event,item,'','left')"
+                         @mouseup=mouseupDiv_size($event,item)></div>
+                    <div id="rUp"
+                         @mousedown="mousedownDiv_size($event,item,'top','')"
+                         @mouseup=mouseupDiv_size($event,item)></div>
+                    <div id="rDown"
+                         @mousedown="mousedownDiv_size($event,item,'bottom','')"
+                         @mouseup=mouseupDiv_size($event,item)></div>
+                </div>
+
+
+            </div>
+            <div style="width: 100%;height: 100%;position: absolute;top: 0;left: 0;z-index: 9;    background: rgba(0,0,0,0.1);"></div>
+            <img v-if="img_url != ''" :src="img_url"
+                 style="width: 100%;height: 100%;position:absolute;top: 0;left: 0;z-index: 0">
+
+        </div>
+    </div>
+</div>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    var _this = '';
+    var vm = new Vue({
+        el: '#app',
+        data() {
+            return {
+                ImgName: '请输入图片名称',
+                boxWidth: '',
+                boxHeight: '',
+                img_url: '',
+                dragging: false,
+                tc_data: [],//图层数
+                isNum: 0,
+                canvasContentWidth: '',
+                canvasContentHeight: '',
+                is_size: false,
+                a: '',
+                b: '',
+                //拉升大小
+                one_data: [],
+                isTrue: true,
+                btn_data:{{newButon}},
+            }
+        },
+
+
+        mounted() {
+            let _this = this;
+            document.addEventListener('mouseup', (event) => {
+                _this.isTrue = false;
+                _this.one_data.stop_move = false;
+                _this.one_data.stop_move = false;
+            }, false);
+            this.makeTemplateNum();
+            this.canvasContentWidth = 360;
+            this.canvasContentHeight = $('.box_bj').height();;
+
+            let demo = document.getElementById("app");
+
+        },
+        methods: {
+            //方块数量
+            makeTemplateNum() {
+                 let _this = this;
+                this.tc_data = [];
+                for (let a = 0; a < this.btn_data.length; a++) {
+
+                    let newObj = {
+                        name: this.btn_data['name'],
+                        left: 100 * (a + 1),
+                        top: 100,
+                        width: 100,
+                        height: 100,
+                        level: a + 1,
+                        diffX: 0,
+                        diffY: 0,
+                        dx: 0,
+                        dy: 0,
+                        dh: 0,
+                        dw: 0,
+                        disright: 0,
+                        distop: 0,
+                        stop_move: false,
+                        name:this.btn_data[a].name,
+                        img:this.btn_data[a].img
+                    }
+                    this.tc_data.push(newObj)
+                }
+            },
+            //鼠标拖拽
+            mousedownDiv(e, item) {
+                this.one_data = item;
+                item.dragging = true;
+                this.isTrue = true;
+                item.diffY = e.pageY - e.target.offsetTop;
+                item.diffX = e.pageX - e.target.offsetLeft;
+                let canvasContent_offsetLeft = document.getElementsByClassName('canvasContent')[0].offsetLeft;
+                let canvasContent_offsetTop = document.getElementsByClassName('canvasContent')[0].offsetTop;
+                item.dw = item.width;//存储默认的div的宽度。
+                item.dh = item.height;//存储默认的div的高度。
+            },
+            //移动
+            mousemoveDiv(e) {
+                let item = this.one_data;
+                if (item.dragging && !item.stop_move) {
+                    item.top = e.pageY - item.diffY;
+                    item.top_new = Number(((e.pageY - item.diffY) / 0.6).toFixed(0));
+                    item.left = e.pageX - item.diffX;
+                    item.left_new = Number(((e.pageX - item.diffX) / 0.6).toFixed(0));
+
+                    if (10 - (item.top) >= 0 || item.top <= 0) {
+                        item.top = 0;
+                        item.top_new = 0;
+                    }
+                    if ((10 - item.left) >= 0 || item.left <= 0) {
+                        item.left = 0;
+                        item.left_new = 0;
+                    }
+                    if (((item.left + item.width) + 10) >= this.canvasContentWidth) {
+                        item.left = this.canvasContentWidth - item.width;
+                        item.left_new = Number((this.canvasContentWidth - item.width) / 0.6).toFixed(0);
+                    }
+                    if (((item.top + item.height) + 10) >= this.canvasContentHeight) {
+                        item.top = this.canvasContentHeight - item.height;
+                        item.top_new = Number((this.canvasContentHeight - item.height) / 0.6).toFixed(0);
+                    }
+                }
+            },
+            mouseupDiv(e, item) {
+                item.dragging = false;
+            },
+            //鼠标放大
+            mousedownDiv_size(e, item, a, b) {
+                this.a = a;
+                this.b = b;
+                item.dx = e.clientX;//当你第一次单击的时候，存储x轴的坐标。
+                item.dy = e.clientY;//当你第一次单击的时候，储存Y轴的坐标。
+                item.disright = item.left + item.width;//存储默认div右边距离屏幕左边的距离。
+                item.distop = item.height + item.top;//存储默认div上边距离屏幕左边的距离。
+                item.stop_move = true;
+            },
+            mousemoveDivSize(e) {
+                let item = this.one_data;
+                if (item.dragging && item.stop_move) {
+                    if (this.b == 'right') {
+                        item.width = item.dw + (e.clientX - item.dx);
+                        item.width_new = Number(((item.dw + (e.clientX - item.dx)) / 0.6).toFixed(0));
+                    }
+                    if (this.b == 'left') {
+                        item.width = item.dw - (e.clientX - item.dx);
+                        item.left = item.disright - item.width;
+                        item.width_new = Number(((item.dw - (e.clientX - item.dx)) / 0.6).toFixed(0));
+                        item.left_new = Number(((item.disright - item.width) / 0.6).toFixed(0));
+                    }
+                    if (this.a == 'bottom') {
+                        item.height = e.clientY - item.dy + item.dh;
+                        item.height_new = Number(((e.clientY - item.dy + item.dh) / 0.6).toFixed(0));
+                    }
+                    if (this.a == 'top') {
+                        item.height = item.dh - (e.clientY - item.dy);
+                        item.top = item.distop - item.height;
+                        item.height_new = Number(((item.dh - (e.clientY - item.dy)) / 0.6).toFixed(0));
+                        item.top_new = Number(((item.distop - item.height) / 0.6).toFixed(0));
+                    }
+                    this.movediv(item);
+                }
+            },
+            // 判断拉升零界点
+            movediv(item) {
+                if (item.left <= 0) {
+                    item.left = 0
+                    item.left_new = 0;
+                }
+                if (item.top <= 0) {
+                    item.top = 0;
+                    item.top_new = 0;
+
+                }
+                if (item.left >= this.canvasContentWidth) {
+                    item.left = this.canvasContentWidth;
+                    item.left_new = Number((this.canvasContentWidth / 0.6).toFixed(0))
+                }
+                if (item.top >= this.canvasContentHeight) {
+                    item.top = this.canvasContentHeight;
+                    item.top_new = Number((this.canvasContentHeight / 0.6).toFixed(0))
+                }
+                if (item.width + Math.abs(item.left) >= this.canvasContentWidth) {
+                    item.width = this.canvasContentWidth - item.left;
+                    item.width_new = Number(((this.canvasContentWidth - item.left) / 0.6).toFixed(0));
+                }
+                if (item.height + Math.abs(item.top) >= this.canvasContentHeight) {
+                    item.height = this.canvasContentHeight - item.top;
+                    item.height_new = Number(((this.canvasContentHeight - item.top) / 0.6).toFixed(0));
+                }
+            },
+            mouseupDivSize(e) {
+                this.isTrue = false;
+                this.one_data.stop_move = false;
+            },
+            dblclickDiv(e, item) {
+                   item.left =(360- item.width)/2
+            },
+            mouseupDiv_size(e, item) {
+                this.isTrue = false;
+                this.one_data.stop_move = false;
+                item.stop_move = false;
+            },
+            //  清除模板
+            clearTemplate() {
+                this.tc_data = [];
+                this.ImgName = '';
+                this.img_url = '';
+            },
+            pullAjax(){
+                 let data = this.tc_data
+                let newData = {};
+                let   width_ = 3.6
+                let   height_ = 6.4
+                for(var a =0 ;a<data.length;a++){
+                    width_ = 3.6
+                    height_ =$('.box_bj').height()/100
+                   bottom = 100- (data[a].top/height_)-(data[a].height/height_)
+                    newData[a] = JSON.stringify({
+                        'width':(data[a].width/width_).toFixed(2) +'%',
+                        'height':(data[a].height/height_).toFixed(2)+'%',
+                        'left':(data[a].left/width_).toFixed(2)+'%',
+                        'top':(data[a].top/height_).toFixed(2)+'%',
+                         'bottom':bottom.toFixed(2)+'%',
+                        'name':data[a].name,
+                        'img':data[a].img,
+                    })
+                }
+                $.ajax({
+                   url: 'http://{{socketIp}}:8080/test',
+                    type: 'post',
+                    data:newData,
+                    dataType: 'json',
+                    success: function success(result) {
+                        if(result.status == 200){
+                            alert('提交成功！')
+                        }
+                    },
+
+                });
+            },
+        //    重置
+            reset(){
+
+            },
+        }
+    });
+</script>
+</body>
+</html>

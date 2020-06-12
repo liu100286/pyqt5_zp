@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <title></title>
+    <style>
+        *{margin: 0;padding: 0;}
+
+        body,
+        html {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-width: 320px;
+            max-width: 750px;
+            margin: 0 auto;
+        }
+        {%if banquan !='无版权' %}
+        .yushan_logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 15%;
+            z-index: 9999;
+        }
+{% endif %}
+        .box {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .box1 {
+            position: relative;
+            width: 100%;
+            height: auto;
+            margin-bottom: 20%;
+        }
+
+        {%if banquan !='无版权' %}
+        .{{banquan}}_banquan {
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            color:  #c5bbc5;
+            background-size: 100% 100%;
+            padding: 8px 0;
+            box-sizing: border-box;
+            position: absolute;
+            bottom: 0;
+        }
+        .{{banquan}}_banquan a{
+            color:  #c5bbc5;
+        }
+   {% endif %}
+    </style>
+</head>
+
+<body>
+<div class="box">
+    <div class="box1">
+                {%if banquan !='无版权' %}
+        <div class="{{banquan}}_logo_black"></div>
+{% endif %}
+        {%if banquan !='无版权' %}
+        <div class="{{banquan}}_banquan"></div>
+{% endif %}
+    </div>
+</div>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<!--监控-->
+<script src="//img.zntec.mobi/javascripts/yushan_zs_min.js"></script>
+<!--默认下载包地址-->
+<script src="./down.js"></script>
+<!--请求下载包-->
+<script src="../lp_js/dl.min.js"></script>
+<!--版权地址-->
+  {%if banquan !='无版权' %}
+<script src="../lp_js/{{banquan}}.js"></script>
+{% endif %}
+<script>
+    new _yushan_Down.dl_down({
+        ios:down_href.ios,
+        android:down_href.android,
+        dlbutton: [''],
+    });
+
+    new _yushan.dl_info({
+        url: '',
+        dlbutton: ['']
+    });
+</script>
+</body>
+
+</html>
